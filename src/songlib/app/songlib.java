@@ -38,13 +38,13 @@ public class SongLib extends Application {
 	public void start(Stage primaryStage) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/songlib/view/songlib.fxml"));
-		AnchorPane root = (AnchorPane) loader.load();
+		AnchorPane songOverView = (AnchorPane) loader.load();
 		
 		 // Give the controller access to the main app.
         songlibController controller = loader.getController();
         controller.setMainApp(this);
         
-		Scene scene = new Scene(root);
+		Scene scene = new Scene(songOverView);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Song Library");
 		primaryStage.setResizable(false);
