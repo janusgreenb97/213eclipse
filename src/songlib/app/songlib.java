@@ -35,7 +35,8 @@ public class SongLib extends Application {
 
 
 	@Override
-	public void start(Stage primaryStage) throws IOException {
+	public void start(Stage primaryStage) {
+		try {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/songlib/view/songlib.fxml"));
 		AnchorPane songOverView = (AnchorPane) loader.load();
@@ -49,6 +50,9 @@ public class SongLib extends Application {
 		primaryStage.setTitle("Song Library");
 		primaryStage.setResizable(false);
 		primaryStage.show();
+	} catch (IOException e) {
+		e.printStackTrace();
+		}
 	}
 
 	public static void main(String[] args) {
