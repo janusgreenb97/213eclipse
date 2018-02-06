@@ -87,6 +87,7 @@ public class Song {
 	}
 
 	public String toString_detial() {
+		if(year.get() == -1) return toString() + " album: " + album + " year: unknow";
 		return toString() + " album: " + album + " year: " + year;
 	}
 
