@@ -96,6 +96,7 @@ public class songlibController {
 	 */
 	@FXML
 	private void handleDeleteSong() {
+		// TODO: alert for confirmation
 		int selectedIndex = songTable.getSelectionModel().getSelectedIndex();
 		if (selectedIndex >= 0) {
 			songTable.getItems().remove(selectedIndex);
@@ -111,8 +112,8 @@ public class songlibController {
 	}
 
 	@FXML
-
 	private void handleEditSong() {
+		// TODO:alert for confirmation
 		Song selectedSong = songTable.getSelectionModel().getSelectedItem();
 		confirmButton.setVisible(true);
 		cancelButton.setVisible(true);
@@ -120,7 +121,6 @@ public class songlibController {
 		nameLabel.setVisible(false);
 		nameField.setVisible(true);
 		nameField.setText(selectedSong.getSongName());
-		//TODO:alert
 
 	}
 
