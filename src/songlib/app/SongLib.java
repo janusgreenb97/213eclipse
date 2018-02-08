@@ -26,8 +26,8 @@ public class SongLib extends Application {
 		// Add some sample data
 		
 		songData.add(new Song("Strawberry Field", "Betles"));
-		songData.add(new Song("222", "Betles"));
-		songData.add(new Song("333", "Betles"));
+		songData.add(new Song("222", "YYY"));
+		songData.add(new Song("333", "ZZZ"));
 		
 	}
 

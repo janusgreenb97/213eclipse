@@ -1,5 +1,7 @@
 package songlib.view;
 
+import java.util.Optional;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -8,6 +10,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import songlib.app.SongLib;
 import songlib.model.Song;
 import javafx.fxml.FXML;
@@ -99,6 +102,12 @@ public class songlibController {
 		// TODO: alert for confirmation
 		int selectedIndex = songTable.getSelectionModel().getSelectedIndex();
 		if (selectedIndex >= 0) {
+			Alert alert = new Alert(AlertType.CONFIRMATION,"Are you sure you want to delete?");
+			alert.initOwner(songlib.getPrimaryStage());
+			Optional<ButtonType> result = alert.showAndWait();
+			if(result.get() != ButtonType.OK) {
+				return;
+			}
 			songTable.getItems().remove(selectedIndex);
 			songTable.getSelectionModel().select(selectedIndex);
 		} else {
@@ -122,6 +131,20 @@ public class songlibController {
 		nameField.setVisible(true);
 		nameField.setText(selectedSong.getSongName());
 
+	}
+	private void confirmationDialog(Stage parentStage) {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.initOwner(parentStage);
+		alert.setTitle("Confirmation Dialog");
+		alert.setHeaderText("Look, a Confirmation Dialog");
+		alert.setContentText("Are you ok with this?");
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == ButtonType.OK){
+		    // ... user chose OK
+		} else {
+		    // ... user chose CANCEL or closed the dialog
+		}
 	}
 
 }
