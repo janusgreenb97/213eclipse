@@ -91,12 +91,13 @@ public class songlibController {
 			nameLabel.setText(song.getSongName());
 			artistLabel.setText(song.getArtist());
 			albumLabel.setText(song.getAlbum());
-			
-			
-			if(-1 == song.getYear()) 
+
+			int y = song.getYear(); 
+			if(-1 == y) 
 				yearLabel.setText("unknown");
 			else
-				yearLabel.setText(Integer.toString(song.getYear()));
+				yearLabel.setText(y+"");
+			
 		} else {
 			nameLabel.setText("");
 			artistLabel.setText("");
