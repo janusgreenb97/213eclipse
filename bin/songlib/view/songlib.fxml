@@ -68,7 +68,7 @@
             </AnchorPane>
         </items>
       </SplitPane>
-      <MenuButton layoutX="501.0" layoutY="2.0" mnemonicParsing="false" text="Operations" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <MenuButton fx:id="menuButton" layoutX="501.0" layoutY="2.0" mnemonicParsing="false" text="Operations" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.0">
         <items>
           <MenuItem mnemonicParsing="false" text="Add" />
           <MenuItem mnemonicParsing="false" onAction="#handleEditSong" text="Edit" />
