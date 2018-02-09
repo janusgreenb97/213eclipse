@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 import songlib.model.Song;
 import songlib.view.songlibController;
 
-public class SongLib extends Application {
+public class SongLib extends Application{
 	private Stage primaryStage;
 	/*
 	 * The data as an observable list of Songs.
@@ -70,6 +70,7 @@ public class SongLib extends Application {
         return primaryStage;
     }
 
+    
 	public static void main(String[] args) {
 		launch(args);
 	}

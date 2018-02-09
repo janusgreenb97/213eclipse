@@ -5,7 +5,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-public class Song {
+public class Song implements Comparable<Song>{
 
 	private StringProperty name, artist, album;
 	private IntegerProperty year;
@@ -65,7 +65,7 @@ public class Song {
 	}
 
 	// setters
-	public void setSoneName(String newSongName) {
+	public void setSongName(String newSongName) {
 		this.name.set(newSongName);
 	}
 
@@ -91,4 +91,21 @@ public class Song {
 		return toString() + " album: " + album + " year: " + year;
 	}
 
+	@Override
+	public int compareTo(Song o) {
+		// TODO Auto-generated method stub
+		int c = this.name.getValue().compareTo(o.name.getValue());
+		if(c != 0) return c;
+		
+		c = this.artist.getValue().compareTo(o.artist.getValue());
+		if(c != 0) return c;
+		
+		c = this.album.getValue().compareTo(o.album.getValue());
+		if(c != 0) return c;
+		
+		c = this.year.getValue().compareTo(o.year.getValue());
+		return c;
+	}
+
+	
 }
