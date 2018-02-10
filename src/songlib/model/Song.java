@@ -107,5 +107,13 @@ public class Song implements Comparable<Song>{
 		return c;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if(o==null ||! (o instanceof Song)) return false;
+		Song temp = (Song)o;
+		return ((this.getSongName().equalsIgnoreCase(temp.getSongName()))) &&
+				(this.getArtist().equalsIgnoreCase(temp.getArtist()));
+	}
+
 	
 }

@@ -83,6 +83,7 @@ public class songlibController {
 		if (songTable.getItems().size() > 0) {
 
 			songTable.getSelectionModel().select(0);
+			songTable.getItems().contains(new Song("","",""));
 		}
 	}
 
