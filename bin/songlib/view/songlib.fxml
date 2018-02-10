@@ -60,6 +60,9 @@
                         <Label fx:id="albumLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label fx:id="yearLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <TextField fx:id="nameField" promptText="Please Enter" visible="false" GridPane.columnIndex="1" />
+                        <TextField fx:id="artistField" promptText="Please Enter" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="albumField" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="yearField" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <Button fx:id="confirmButton" mnemonicParsing="false" text="Confirm" visible="false" GridPane.rowIndex="4" />
                         <Button fx:id="cancelButton" mnemonicParsing="false" text="Cancel" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                      </children>
@@ -70,7 +73,7 @@
       </SplitPane>
       <MenuButton fx:id="menuButton" layoutX="501.0" layoutY="2.0" mnemonicParsing="false" text="Operations" AnchorPane.rightAnchor="3.5" AnchorPane.topAnchor="3.0">
         <items>
-          <MenuItem mnemonicParsing="false" text="Add" />
+          <MenuItem mnemonicParsing="false" onAction="#handleAddSong" text="Add" />
           <MenuItem mnemonicParsing="false" onAction="#handleEditSong" text="Edit" />
             <MenuItem mnemonicParsing="false" onAction="#handleDeleteSong" text="Delete" />
         </items>

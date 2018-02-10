@@ -43,6 +43,12 @@ public class songlibController {
 	@FXML
 	private TextField nameField;
 	@FXML
+	private TextField artistField;
+	@FXML
+	private TextField albumField;
+	@FXML
+	private TextField yearField;
+	@FXML
 	private Button confirmButton;
 	@FXML
 	private Button cancelButton;
@@ -83,7 +89,6 @@ public class songlibController {
 		if (songTable.getItems().size() > 0) {
 
 			songTable.getSelectionModel().select(0);
-			songTable.getItems().contains(new Song("","",""));
 		}
 	}
 
@@ -93,12 +98,12 @@ public class songlibController {
 			artistLabel.setText(song.getArtist());
 			albumLabel.setText(song.getAlbum());
 
-			int y = song.getYear(); 
-			if(-1 == y) 
+			int y = song.getYear();
+			if (-1 == y)
 				yearLabel.setText("unknown");
 			else
-				yearLabel.setText(y+"");
-			
+				yearLabel.setText(y + "");
+
 		} else {
 			nameLabel.setText("");
 			artistLabel.setText("");
@@ -143,6 +148,9 @@ public class songlibController {
 		setEditMode(true);
 
 		nameField.setText(selectedSong.getSongName());
+		artistField.setText(selectedSong.getArtist());
+		albumField.setText(selectedSong.getAlbum());
+		yearField.setText(selectedSong.getYear() + "");
 
 		confirmButton.setOnAction((event) -> {
 			// TODO: confirm event: check(is valid?), save, resort
@@ -162,10 +170,67 @@ public class songlibController {
 		menuButton.setDisable(set);
 		nameLabel.setVisible(!set);
 		nameField.setVisible(set);
+		artistLabel.setVisible(!set);
+		artistField.setVisible(set);
+		albumLabel.setVisible(!set);
+		albumField.setVisible(set);
+		yearLabel.setVisible(!set);
+		yearField.setVisible(set);
 	}
-	
+
 	private boolean isInputValid() {
 		return false;
+	}
+
+	@FXML
+	private void handleAddSong() {
+
+		Song selectedSong = songTable.getSelectionModel().getSelectedItem();
+		TableViewSelectionModel<Song> currentSelection = songTable.getSelectionModel();
+		// TODO: how to fix selection? Don't want the user to random click.
+		// songTable.setSelectionModel(null);
+		setEditMode(true);
+		nameField.setText(null);
+		artistField.setText(null);
+		albumField.setText(null);
+		yearField.setText(null);
+
+		confirmButton.setOnAction((event) -> {
+			System.out.println("Button Action: confirm pressed");
+			Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to add?");
+			alert.initOwner(songlib.getPrimaryStage());
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() != ButtonType.OK) {
+				return;
+			}
+			System.out.print(inputIsNull());
+			if (inputIsNull()) {
+				// error alert
+				alert = new Alert(AlertType.WARNING);
+				alert.initOwner(songlib.getPrimaryStage());
+				alert.setTitle("Error");
+				alert.setHeaderText("Name and Artist cannot be empty.");
+				alert.setContentText("Please make sure to enter both name and artist!");
+				alert.showAndWait();
+			}
+			// create Song object, compare, new song index?
+			Song newSong = new Song(nameField.getText(), artistField.getText(), "", -1);
+			//compare
+			songTable.getItems().contains(newSong);
+			songTable.getItems().add(newSong);
+			songTable.getSelectionModel().select(0);
+			// quit edit mode
+			setEditMode(false);
+		});
+		cancelButton.setOnAction((event) -> {
+			System.out.println("Button Action: cancel pressed");
+			setEditMode(false);
+			songTable.setSelectionModel(currentSelection);
+		});
+	}
+
+	private boolean inputIsNull() {
+		return (nameField.getText().equals("") || artistField.getText().equals(""));
 	}
 
 }
