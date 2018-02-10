@@ -98,12 +98,12 @@ public class songlibController {
 			artistLabel.setText(song.getArtist());
 			albumLabel.setText(song.getAlbum());
 
-			int y = song.getYear(); 
-			if(-1 == y) 
+			int y = song.getYear();
+			if (-1 == y)
 				yearLabel.setText("unknown");
 			else
-				yearLabel.setText(y+"");
-			
+				yearLabel.setText(y + "");
+
 		} else {
 			nameLabel.setText("");
 			artistLabel.setText("");
@@ -150,7 +150,7 @@ public class songlibController {
 		nameField.setText(selectedSong.getSongName());
 		artistField.setText(selectedSong.getArtist());
 		albumField.setText(selectedSong.getAlbum());
-		yearField.setText(selectedSong.getYear()+"");
+		yearField.setText(selectedSong.getYear() + "");
 
 		confirmButton.setOnAction((event) -> {
 			// TODO: confirm event: check(is valid?), save, resort
@@ -177,19 +177,25 @@ public class songlibController {
 		yearLabel.setVisible(!set);
 		yearField.setVisible(set);
 	}
-	
+
 	private boolean isInputValid() {
 		return false;
 	}
-	
+
 	@FXML
 	private void handleAddSong() {
 
 		Song selectedSong = songTable.getSelectionModel().getSelectedItem();
 		TableViewSelectionModel<Song> currentSelection = songTable.getSelectionModel();
-		songTable.setSelectionModel(null);
+		// TODO: how to fix selection? Don't want the user to random click.
+		// songTable.setSelectionModel(null);
 		setEditMode(true);
-		confirmButton.setOnAction((event) -> { 
+		nameField.setText(null);
+		artistField.setText(null);
+		albumField.setText(null);
+		yearField.setText(null);
+
+		confirmButton.setOnAction((event) -> {
 			System.out.println("Button Action: confirm pressed");
 			Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to add?");
 			alert.initOwner(songlib.getPrimaryStage());
@@ -198,8 +204,8 @@ public class songlibController {
 				return;
 			}
 			System.out.print(inputIsNull());
-			if(inputIsNull()) {
-				//error alert
+			if (inputIsNull()) {
+				// error alert
 				alert = new Alert(AlertType.WARNING);
 				alert.initOwner(songlib.getPrimaryStage());
 				alert.setTitle("Error");
@@ -207,20 +213,24 @@ public class songlibController {
 				alert.setContentText("Please make sure to enter both name and artist!");
 				alert.showAndWait();
 			}
-			//create Song object, compare 
-			
-			
+			// create Song object, compare, new song index?
+			Song newSong = new Song(nameField.getText(), artistField.getText(), "", -1);
+			//compare
+			songTable.getItems().contains(newSong);
+			songTable.getItems().add(newSong);
+			songTable.getSelectionModel().select(0);
+			// quit edit mode
+			setEditMode(false);
 		});
 		cancelButton.setOnAction((event) -> {
 			System.out.println("Button Action: cancel pressed");
 			setEditMode(false);
 			songTable.setSelectionModel(currentSelection);
 		});
-		nameField.getText();
 	}
+
 	private boolean inputIsNull() {
-		return (nameField.getText().equals("")||artistField.getText().equals(""));
+		return (nameField.getText().equals("") || artistField.getText().equals(""));
 	}
-	
 
 }
