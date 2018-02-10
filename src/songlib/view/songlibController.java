@@ -43,6 +43,12 @@ public class songlibController {
 	@FXML
 	private TextField nameField;
 	@FXML
+	private TextField artistField;
+	@FXML
+	private TextField albumField;
+	@FXML
+	private TextField yearField;
+	@FXML
 	private Button confirmButton;
 	@FXML
 	private Button cancelButton;
@@ -142,6 +148,9 @@ public class songlibController {
 		setEditMode(true);
 
 		nameField.setText(selectedSong.getSongName());
+		artistField.setText(selectedSong.getArtist());
+		albumField.setText(selectedSong.getAlbum());
+		yearField.setText(selectedSong.getYear()+"");
 
 		confirmButton.setOnAction((event) -> {
 			// TODO: confirm event: check(is valid?), save, resort
@@ -161,10 +170,57 @@ public class songlibController {
 		menuButton.setDisable(set);
 		nameLabel.setVisible(!set);
 		nameField.setVisible(set);
+		artistLabel.setVisible(!set);
+		artistField.setVisible(set);
+		albumLabel.setVisible(!set);
+		albumField.setVisible(set);
+		yearLabel.setVisible(!set);
+		yearField.setVisible(set);
 	}
 	
 	private boolean isInputValid() {
 		return false;
 	}
+	
+	@FXML
+	private void handleAddSong() {
+
+		Song selectedSong = songTable.getSelectionModel().getSelectedItem();
+		TableViewSelectionModel<Song> currentSelection = songTable.getSelectionModel();
+		songTable.setSelectionModel(null);
+		setEditMode(true);
+		confirmButton.setOnAction((event) -> { 
+			System.out.println("Button Action: confirm pressed");
+			Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to add?");
+			alert.initOwner(songlib.getPrimaryStage());
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() != ButtonType.OK) {
+				return;
+			}
+			System.out.print(inputIsNull());
+			if(inputIsNull()) {
+				//error alert
+				alert = new Alert(AlertType.WARNING);
+				alert.initOwner(songlib.getPrimaryStage());
+				alert.setTitle("Error");
+				alert.setHeaderText("Name and Artist cannot be empty.");
+				alert.setContentText("Please make sure to enter both name and artist!");
+				alert.showAndWait();
+			}
+			//create Song object, compare 
+			
+			
+		});
+		cancelButton.setOnAction((event) -> {
+			System.out.println("Button Action: cancel pressed");
+			setEditMode(false);
+			songTable.setSelectionModel(currentSelection);
+		});
+		nameField.getText();
+	}
+	private boolean inputIsNull() {
+		return (nameField.getText().equals("")||artistField.getText().equals(""));
+	}
+	
 
 }
