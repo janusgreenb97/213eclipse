@@ -7,3 +7,4 @@
 -add finish (check method?).
 -
 
+duplicate ERROR or COMFIRMATION?

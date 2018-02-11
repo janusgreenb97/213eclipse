@@ -2,6 +2,7 @@ package songlib.view;
 
 import java.util.Optional;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
@@ -190,10 +191,10 @@ public class songlibController {
 		// TODO: how to fix selection? Don't want the user to random click.
 		// songTable.setSelectionModel(null);
 		setEditMode(true);
-		nameField.setText(null);
-		artistField.setText(null);
-		albumField.setText(null);
-		yearField.setText(null);
+		nameField.setText("");
+		artistField.setText("");
+		albumField.setText("");
+		yearField.setText("");
 
 		confirmButton.setOnAction((event) -> {
 			System.out.println("Button Action: confirm pressed");
@@ -203,7 +204,7 @@ public class songlibController {
 			if (result.get() != ButtonType.OK) {
 				return;
 			}
-			System.out.print(inputIsNull());
+			System.out.println("System is null?"+inputIsNull());
 			if (inputIsNull()) {
 				// error alert
 				alert = new Alert(AlertType.WARNING);
@@ -212,13 +213,25 @@ public class songlibController {
 				alert.setHeaderText("Name and Artist cannot be empty.");
 				alert.setContentText("Please make sure to enter both name and artist!");
 				alert.showAndWait();
+				return;
 			}
 			// create Song object, compare, new song index?
-			Song newSong = new Song(nameField.getText(), artistField.getText(), "", -1);
+			Song newSong = new Song(nameField.getText(), artistField.getText(), albumField.getText(),Integer.parseInt(yearField.getText()));
 			//compare
-			songTable.getItems().contains(newSong);
+			if(songTable.getItems().contains(newSong)) {
+				//newSong = null;
+				//error alert
+				alert = new Alert(AlertType.WARNING);
+				alert.initOwner(songlib.getPrimaryStage());
+				alert.setTitle("Error");
+				alert.setHeaderText("Duplicated item");
+				alert.setContentText("Please enter a different one.");
+				alert.showAndWait();
+				return;
+			}
 			songTable.getItems().add(newSong);
-			songTable.getSelectionModel().select(0);
+			FXCollections.sort(songTable.getItems());
+			songTable.getSelectionModel().select(newSong);
 			// quit edit mode
 			setEditMode(false);
 		});
@@ -230,7 +243,7 @@ public class songlibController {
 	}
 
 	private boolean inputIsNull() {
-		return (nameField.getText().equals("") || artistField.getText().equals(""));
+		return (nameField.getText().length()==0 || artistField.getText().length()==0);
 	}
 
 }
