@@ -98,12 +98,7 @@ public class songlibController {
 			nameLabel.setText(song.getSongName());
 			artistLabel.setText(song.getArtist());
 			albumLabel.setText(song.getAlbum());
-
-			int y = song.getYear();
-			if (-1 == y)
-				yearLabel.setText("unknown");
-			else
-				yearLabel.setText(y + "");
+			yearLabel.setText(song.getYear());
 
 		} else {
 			nameLabel.setText("");
@@ -163,7 +158,7 @@ public class songlibController {
 			if(inputName.equals(selectedSong.getSongName())&&inputArtist.equals(selectedSong.getArtist())) {
 				//revise selectedSong
 				selectedSong.setAlbum(inputAlbum);
-				selectedSong.setYear(Integer.parseInt(inputYear));
+				selectedSong.setYear(inputYear);
 				songTable.setSelectionModel(currentSelection);
 				songTable.getSelectionModel().select(selectedSong);
 			}else {
@@ -178,7 +173,7 @@ public class songlibController {
 					alert.showAndWait();
 					return;
 				}
-				Song newSong = new Song(inputName,inputArtist,inputAlbum,Integer.parseInt(inputYear));
+				Song newSong = new Song(inputName,inputArtist,inputAlbum,inputYear);
 				if(songTable.getItems().contains(newSong)) {
 					//newSong = null;
 					//error alert
@@ -258,7 +253,7 @@ public class songlibController {
 				return;
 			}
 			// create Song object, compare, new song index?
-			Song newSong = new Song(nameField.getText(), artistField.getText(), albumField.getText(),Integer.parseInt(yearField.getText()));
+			Song newSong = new Song(nameField.getText(), artistField.getText(), albumField.getText(),yearField.getText());
 			//compare
 			if(songTable.getItems().contains(newSong)) {
 				//newSong = null;
