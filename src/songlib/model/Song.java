@@ -81,19 +81,19 @@ public class Song implements Comparable<Song> {
 	@Override
 	public int compareTo(Song o) {
 		// TODO Auto-generated method stub
-		int c = this.name.getValue().compareTo(o.name.getValue());
+		int c = this.name.getValue().compareToIgnoreCase(o.name.getValue().toLowerCase());
 		if (c != 0)
 			return c;
 
-		c = this.artist.getValue().compareTo(o.artist.getValue());
+		c = this.artist.getValue().compareToIgnoreCase(o.artist.getValue());
 		if (c != 0)
 			return c;
 
-		c = this.album.getValue().compareTo(o.album.getValue());
+		c = this.album.getValue().compareToIgnoreCase(o.album.getValue());
 		if (c != 0)
 			return c;
 
-		c = this.year.getValue().compareTo(o.year.getValue());
+		c = this.year.getValue().compareToIgnoreCase(o.year.getValue());
 		return c;
 	}
 
