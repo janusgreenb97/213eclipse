@@ -140,7 +140,7 @@ public class songlibController {
 
 	@FXML
 	private void handleEditSong() {
-		// TODO:alert for confirmation, CellEditEvent
+		// TODO:alert for confirmation, check valid, CellEditEvent
 		// edit mode: cannot make selection, menuButton is disabled
 		Song selectedSong = songTable.getSelectionModel().getSelectedItem();
 		TableViewSelectionModel<Song> currentSelection = songTable.getSelectionModel();
@@ -152,13 +152,55 @@ public class songlibController {
 		artistField.setText(selectedSong.getArtist());
 		albumField.setText(selectedSong.getAlbum());
 		yearField.setText(selectedSong.getYear() + "");
+		
 
 		confirmButton.setOnAction((event) -> {
-			// TODO: confirm event: check(is valid?), save, resort
-			System.out.println("Button Action: confirm pressed");
+			String inputName = nameField.getText();
+			String inputArtist = artistField.getText();
+			String inputAlbum = albumField.getText();
+			String inputYear = yearField.getText();
+			
+			if(inputName.equals(selectedSong.getSongName())&&inputArtist.equals(selectedSong.getArtist())) {
+				//revise selectedSong
+				selectedSong.setAlbum(inputAlbum);
+				selectedSong.setYear(Integer.parseInt(inputYear));
+				songTable.setSelectionModel(currentSelection);
+				songTable.getSelectionModel().select(selectedSong);
+			}else {
+				//created new object, check isContains, delete Selected song, add new Song.
+				if (inputIsNull()) {
+					// error alert
+					Alert alert = new Alert(AlertType.WARNING);
+					alert.initOwner(songlib.getPrimaryStage());
+					alert.setTitle("Error");
+					alert.setHeaderText("Name and Artist cannot be empty.");
+					alert.setContentText("Please make sure to enter both name and artist!");
+					alert.showAndWait();
+					return;
+				}
+				Song newSong = new Song(inputName,inputArtist,inputAlbum,Integer.parseInt(inputYear));
+				if(songTable.getItems().contains(newSong)) {
+					//newSong = null;
+					//error alert
+					Alert alert = new Alert(AlertType.WARNING);
+					alert.initOwner(songlib.getPrimaryStage());
+					alert.setTitle("Error");
+					alert.setHeaderText("Duplicated item");
+					alert.setContentText("Please enter a different one.");
+					alert.showAndWait();
+					return;
+				}
+				songTable.getItems().remove(selectedSong);
+				songTable.getItems().add(newSong);
+				FXCollections.sort(songTable.getItems());
+				songTable.setSelectionModel(currentSelection);
+				songTable.getSelectionModel().select(newSong);
+				
+			}
+			setEditMode(false);
+			return;
 		});
 		cancelButton.setOnAction((event) -> {
-			System.out.println("Button Action: cancel pressed");
 			setEditMode(false);
 			songTable.setSelectionModel(currentSelection);
 		});
@@ -194,7 +236,7 @@ public class songlibController {
 		nameField.setText("");
 		artistField.setText("");
 		albumField.setText("");
-		yearField.setText("");
+		yearField.setText("-1");
 
 		confirmButton.setOnAction((event) -> {
 			System.out.println("Button Action: confirm pressed");
@@ -204,7 +246,7 @@ public class songlibController {
 			if (result.get() != ButtonType.OK) {
 				return;
 			}
-			System.out.println("System is null?"+inputIsNull());
+			
 			if (inputIsNull()) {
 				// error alert
 				alert = new Alert(AlertType.WARNING);
