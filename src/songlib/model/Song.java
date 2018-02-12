@@ -102,8 +102,8 @@ public class Song implements Comparable<Song> {
 		if (o == null || !(o instanceof Song))
 			return false;
 		Song temp = (Song) o;
-		return ((this.getSongName().equalsIgnoreCase(temp.getSongName())))
-				&& (this.getArtist().equalsIgnoreCase(temp.getArtist()));
+		return ((this.getSongName().equals(temp.getSongName())))
+				&& (this.getArtist().equals(temp.getArtist()));
 	}
 
 }
