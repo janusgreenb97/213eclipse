@@ -155,12 +155,15 @@ public class songlibController {
 			String inputAlbum = albumField.getText();
 			String inputYear = yearField.getText();
 			
-			if(inputName.equals(selectedSong.getSongName())&&inputArtist.equals(selectedSong.getArtist())) {
+			if(inputName.equalsIgnoreCase(selectedSong.getSongName())&&inputArtist.equalsIgnoreCase(selectedSong.getArtist())) {
 				//revise selectedSong
+				selectedSong.setSongName(inputName);
+				selectedSong.setArtist(inputArtist);
 				selectedSong.setAlbum(inputAlbum);
 				selectedSong.setYear(inputYear);
 				songTable.setSelectionModel(currentSelection);
 				songTable.getSelectionModel().select(selectedSong);
+				showSongDetails(selectedSong);
 			}else {
 				//created new object, check isContains, delete Selected song, add new Song.
 				if (inputIsNull()) {
@@ -190,6 +193,7 @@ public class songlibController {
 				FXCollections.sort(songTable.getItems());
 				songTable.setSelectionModel(currentSelection);
 				songTable.getSelectionModel().select(newSong);
+				showSongDetails(newSong);
 				
 			}
 			setEditMode(false);
@@ -199,7 +203,7 @@ public class songlibController {
 			setEditMode(false);
 			songTable.setSelectionModel(currentSelection);
 		});
-
+		
 	}
 
 	private void setEditMode(Boolean set) {
