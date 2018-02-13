@@ -86,14 +86,6 @@ public class Song implements Comparable<Song> {
 			return c;
 
 		c = this.artist.getValue().compareToIgnoreCase(o.artist.getValue());
-		if (c != 0)
-			return c;
-
-		c = this.album.getValue().compareToIgnoreCase(o.album.getValue());
-		if (c != 0)
-			return c;
-
-		c = this.year.getValue().compareToIgnoreCase(o.year.getValue());
 		return c;
 	}
 
@@ -102,8 +94,8 @@ public class Song implements Comparable<Song> {
 		if (o == null || !(o instanceof Song))
 			return false;
 		Song temp = (Song) o;
-		return ((this.getSongName().equals(temp.getSongName())))
-				&& (this.getArtist().equals(temp.getArtist()));
+		return ((this.getSongName().equalsIgnoreCase(temp.getSongName())))
+				&& (this.getArtist().equalsIgnoreCase(temp.getArtist()));
 	}
 
 }
