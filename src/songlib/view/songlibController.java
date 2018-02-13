@@ -206,10 +206,10 @@ public class songlibController {
 			if (result.get() != ButtonType.OK) {
 				return;
 			}
-			String inputName = nameField.getText();
-			String inputArtist = artistField.getText();
-			String inputAlbum = albumField.getText();
-			String inputYear = yearField.getText();
+			String inputName = nameField.getText().trim();
+			String inputArtist = artistField.getText().trim();
+			String inputAlbum = albumField.getText().trim();
+			String inputYear = yearField.getText().trim();
 
 			if (inputName.equalsIgnoreCase(selectedSong.getSongName())
 					&& inputArtist.equalsIgnoreCase(selectedSong.getArtist())) {
@@ -314,8 +314,8 @@ public class songlibController {
 				return;
 			}
 			// create Song object, compare, new song index?
-			Song newSong = new Song(nameField.getText(), artistField.getText(), albumField.getText(),
-					yearField.getText());
+			Song newSong = new Song(nameField.getText().trim(), artistField.getText().trim(), albumField.getText().trim(),
+					yearField.getText().trim());
 			// compare
 			if (songTable.getItems().contains(newSong)) {
 				// newSong = null;
