@@ -1,5 +1,11 @@
 package songlib.view;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Optional;
 
 import javafx.collections.FXCollections;
@@ -76,6 +82,48 @@ public class songlibController {
 
 	}
 
+	private void loadLocal() {
+		// read from file
+		try {
+			// FileReader reads text files in the default encoding.
+			FileReader fileReader = new FileReader("./src/songlib/model/data.txt");
+
+			// Always wrap FileReader in BufferedReader.
+			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			String readName = "", readArtist = "", readAlbum = "", readYear = "";
+			while ((readName = bufferedReader.readLine()) != null) {
+				if ((readArtist = bufferedReader.readLine()) == null)
+					break;
+				if ((readAlbum = bufferedReader.readLine()) == null)
+					break;
+				if ((readYear = bufferedReader.readLine()) == null)
+					break;
+				Song newSong = new Song(readName, readArtist, readAlbum, readYear);
+				// System.err.println(songlib.getSongData());
+				songlib.getSongData().add(newSong);
+			}
+
+			// Always close files.
+			bufferedReader.close();
+		} catch (IOException ex) {
+			System.err.println("Error reading file '" + "data");
+		}
+	}
+
+	private void saveLocal() {
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter("./src/songlib/model/data.txt"));
+			for (Song a : songlib.getSongData()) {
+				System.out.print(a.toString());
+				writer.write(a.toString());
+			}
+			writer.close();
+		} catch (IOException ex) {
+			System.err.println("error!");
+		}
+		// save after each revise
+	}
+
 	/**
 	 * Is called by the main application to give a reference back to itself.
 	 * 
@@ -84,13 +132,15 @@ public class songlibController {
 	public void setMainApp(SongLib songlib) {
 		this.songlib = songlib;
 
+		loadLocal();
+
 		// Add observable list data to the table
 		songTable.setItems(songlib.getSongData());
 
 		if (songTable.getItems().size() > 0) {
-
 			songTable.getSelectionModel().select(0);
 		}
+
 	}
 
 	public void showSongDetails(Song song) {
@@ -123,6 +173,7 @@ public class songlibController {
 			}
 			songTable.getItems().remove(selectedIndex);
 			songTable.getSelectionModel().select(selectedIndex);
+			saveLocal();
 		} else {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.initOwner(songlib.getPrimaryStage());
@@ -146,17 +197,23 @@ public class songlibController {
 		nameField.setText(selectedSong.getSongName());
 		artistField.setText(selectedSong.getArtist());
 		albumField.setText(selectedSong.getAlbum());
-		yearField.setText(selectedSong.getYear() + "");
-		
+		yearField.setText(selectedSong.getYear());
 
 		confirmButton.setOnAction((event) -> {
+			Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to add?");
+			alert.initOwner(songlib.getPrimaryStage());
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() != ButtonType.OK) {
+				return;
+			}
 			String inputName = nameField.getText();
 			String inputArtist = artistField.getText();
 			String inputAlbum = albumField.getText();
 			String inputYear = yearField.getText();
-			
-			if(inputName.equalsIgnoreCase(selectedSong.getSongName())&&inputArtist.equalsIgnoreCase(selectedSong.getArtist())) {
-				//revise selectedSong
+
+			if (inputName.equalsIgnoreCase(selectedSong.getSongName())
+					&& inputArtist.equalsIgnoreCase(selectedSong.getArtist())) {
+				// revise selectedSong
 				selectedSong.setSongName(inputName);
 				selectedSong.setArtist(inputArtist);
 				selectedSong.setAlbum(inputAlbum);
@@ -164,11 +221,12 @@ public class songlibController {
 				songTable.setSelectionModel(currentSelection);
 				songTable.getSelectionModel().select(selectedSong);
 				showSongDetails(selectedSong);
-			}else {
-				//created new object, check isContains, delete Selected song, add new Song.
+				saveLocal();
+			} else {
+				// created new object, check isContains, delete Selected song, add new Song.
 				if (inputIsNull()) {
 					// error alert
-					Alert alert = new Alert(AlertType.WARNING);
+					alert = new Alert(AlertType.WARNING);
 					alert.initOwner(songlib.getPrimaryStage());
 					alert.setTitle("Error");
 					alert.setHeaderText("Name and Artist cannot be empty.");
@@ -176,11 +234,11 @@ public class songlibController {
 					alert.showAndWait();
 					return;
 				}
-				Song newSong = new Song(inputName,inputArtist,inputAlbum,inputYear);
-				if(songTable.getItems().contains(newSong)) {
-					//newSong = null;
-					//error alert
-					Alert alert = new Alert(AlertType.WARNING);
+				Song newSong = new Song(inputName, inputArtist, inputAlbum, inputYear);
+				if (songTable.getItems().contains(newSong)) {
+					// newSong = null;
+					// error alert
+					alert = new Alert(AlertType.WARNING);
 					alert.initOwner(songlib.getPrimaryStage());
 					alert.setTitle("Error");
 					alert.setHeaderText("Duplicated item");
@@ -194,7 +252,7 @@ public class songlibController {
 				songTable.setSelectionModel(currentSelection);
 				songTable.getSelectionModel().select(newSong);
 				showSongDetails(newSong);
-				
+				saveLocal();
 			}
 			setEditMode(false);
 			return;
@@ -203,7 +261,7 @@ public class songlibController {
 			setEditMode(false);
 			songTable.setSelectionModel(currentSelection);
 		});
-		
+
 	}
 
 	private void setEditMode(Boolean set) {
@@ -235,17 +293,16 @@ public class songlibController {
 		nameField.setText("");
 		artistField.setText("");
 		albumField.setText("");
-		yearField.setText("-1");
+		yearField.setText("");
 
 		confirmButton.setOnAction((event) -> {
-			System.out.println("Button Action: confirm pressed");
 			Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to add?");
 			alert.initOwner(songlib.getPrimaryStage());
 			Optional<ButtonType> result = alert.showAndWait();
 			if (result.get() != ButtonType.OK) {
 				return;
 			}
-			
+
 			if (inputIsNull()) {
 				// error alert
 				alert = new Alert(AlertType.WARNING);
@@ -257,11 +314,12 @@ public class songlibController {
 				return;
 			}
 			// create Song object, compare, new song index?
-			Song newSong = new Song(nameField.getText(), artistField.getText(), albumField.getText(),yearField.getText());
-			//compare
-			if(songTable.getItems().contains(newSong)) {
-				//newSong = null;
-				//error alert
+			Song newSong = new Song(nameField.getText(), artistField.getText(), albumField.getText(),
+					yearField.getText());
+			// compare
+			if (songTable.getItems().contains(newSong)) {
+				// newSong = null;
+				// error alert
 				alert = new Alert(AlertType.WARNING);
 				alert.initOwner(songlib.getPrimaryStage());
 				alert.setTitle("Error");
@@ -270,21 +328,24 @@ public class songlibController {
 				alert.showAndWait();
 				return;
 			}
+
 			songTable.getItems().add(newSong);
 			FXCollections.sort(songTable.getItems());
 			songTable.getSelectionModel().select(newSong);
 			// quit edit mode
 			setEditMode(false);
+			saveLocal();
 		});
 		cancelButton.setOnAction((event) -> {
 			System.out.println("Button Action: cancel pressed");
 			setEditMode(false);
 			songTable.setSelectionModel(currentSelection);
 		});
+
 	}
 
 	private boolean inputIsNull() {
-		return (nameField.getText().length()==0 || artistField.getText().length()==0);
+		return (nameField.getText().length() == 0 || artistField.getText().length() == 0);
 	}
 
 }

@@ -24,13 +24,13 @@ public class SongLib extends Application{
 	 */
 	public SongLib() {
 		// Add some sample data
-		
+		/*
 		songData.add(new Song("Strawberry Field", "Betles"));
 		songData.add(new Song("222", "YYY"));
 		songData.add(new Song("333", "ZZZ"));
-		
+		*/
 	}
-
+	
 	/**
 	 * Returns the data as an observable list of Persons.
 	 * 

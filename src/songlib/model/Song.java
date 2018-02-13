@@ -75,7 +75,7 @@ public class Song implements Comparable<Song> {
 
 	// utility methods
 	public String toString() {
-		return "song: " + name + " artist: " + artist;
+		return getSongName() + "\n" + getArtist()+"\n"+getAlbum()+"\n"+getYear()+"\n";
 	}
 
 	@Override
