@@ -1,3 +1,4 @@
+//author: Ruoyang Hu and Jianan Yu
 package songlib.model;
 
 import javafx.beans.property.SimpleIntegerProperty;
